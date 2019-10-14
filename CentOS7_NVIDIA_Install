@@ -1,0 +1,17 @@
+yum update -y
+yum install gcc kernel-devel kernel-headers -y
+echo "blacklist nouveau" >> /etc/modprobe.d/blacklist.conf
+echo "init 3" >> /etc/inittab
+sudo mv /boot/initramfs-$(uname -r).img /boot/initramfs-$(uname -r).img.bak
+sudo dracut -v /boot/initramfs-$(uname -r).img $(uname -r)
+
+reboot
+init 3
+
+######################################################
+###### change directory to "nvidia driver dir"  ######
+######################################################
+chmod +x ./NVIDIA*.run
+ ./NVIDIA*.run --kernel-source-path=/usr/src/kernels/内核号  -k $(uname -r)
+                                                        |                  
+                                                        |-->按2下tab
